@@ -62,11 +62,5 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 file = request.files["file"]
-if file:
-    # Ensure upload folder exists
-    os.makedirs("static/uploaded", exist_ok=True)
 
-    filename = file.filename
-    filepath = os.path.join("static", "uploaded", filename)
-    file.save(filepath)
 
