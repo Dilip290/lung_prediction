@@ -1,125 +1,148 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Pneumonia & Cancer Detector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #e3fdfd, #cbf1f5, #a6e3e9, #71c9ce);
-      background-size: 400% 400%;
-      animation: gradientBG 12s ease infinite;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #f1f8e9);
       min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    h1 {
-      margin-top: 50px;
-      color: #004d40;
-      font-size: 2.8em;
-      text-shadow: 1px 1px 2px #fff;
-    }
-
-    form {
-      margin-top: 30px;
-      padding: 30px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
       text-align: center;
     }
 
-    select, input[type="file"], input[type="submit"] {
-      margin-top: 15px;
-      font-size: 1em;
-      padding: 12px;
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #00796b;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    input, select {
       width: 100%;
-      border-radius: 10px;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
       border: 1px solid #ccc;
+      font-size: 16px;
     }
 
     input[type="submit"] {
-      margin-top: 20px;
-      background-color: #00bfa5;
+      background-color: #00796b;
       color: white;
       border: none;
       cursor: pointer;
-      transition: 0.3s ease;
+      transition: background-color 0.3s ease;
     }
 
     input[type="submit"]:hover {
-      background-color: #00796b;
+      background-color: #004d40;
     }
 
     .result {
-      margin-top: 40px;
-      font-size: 1.6em;
-      font-weight: bold;
-      color: #004d40;
-      background: rgba(255, 255, 255, 0.5);
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+      font-size: 1.1em;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .result.danger {
+      background-color: #ffebee;
+      color: #b71c1c;
+      border-left: 6px solid #d32f2f;
+    }
+
+    .result.healthy {
+      background-color: #e0f2f1;
+      color: #00796b;
+      border-left: 6px solid #26a69a;
+    }
+
+    .result.patient {
+      background-color: #f3f4f6;
+      color: #333;
+      border-left: 6px solid #607d8b;
     }
 
     .image-preview {
-      margin-top: 25px;
-      animation: fadeIn 1s ease-in;
+      margin-top: 20px;
     }
 
     .image-preview img {
-      width: 300px;
-      border-radius: 15px;
-      box-shadow: 0 10px 25px rgba(0, 77, 64, 0.3);
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @media screen and (max-width: 600px) {
-      h1 { font-size: 2em; }
-      input[type="submit"] { padding: 10px 20px; }
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
     }
   </style>
 </head>
 <body>
-  <h1>🩻 Medical X-ray Detector</h1>
+  <div class="container">
+    <h1>🩺 AI-Powered Medical X-ray Diagnosis</h1>
 
-  <form method="POST" enctype="multipart/form-data">
-    <label for="disease">Choose Diagnosis:</label><br>
-    <select name="disease" id="disease" required>
-      <option value="" disabled selected>Select</option>
-      <option value="pneumonia" {% if disease_type == 'pneumonia' %}selected{% endif %}>Pneumonia</option>
-      <option value="cancer" {% if disease_type == 'cancer' %}selected{% endif %}>Lung Cancer</option>
-    </select><br>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="number" name="age" placeholder="Age" required>
+      <input type="text" name="mobile" placeholder="Mobile Number" required>
+      <input type="email" name="email" placeholder="Email" required>
 
-    <input type="file" name="file" accept="image/*" required><br>
-    <input type="submit" value="Analyze X-ray">
-  </form>
+      <select name="disease" id="disease" required>
+        <option value="" disabled selected>Select Disease Type</option>
+        <option value="pneumonia" {% if disease_type == 'pneumonia' %}selected{% endif %}>Pneumonia</option>
+        <option value="cancer" {% if disease_type == 'cancer' %}selected{% endif %}>Lung Cancer</option>
+      </select>
 
-  {% if prediction %}
-    <div class="result">
-      Result: {{ prediction }}<br>
-      Confidence: {{ '{:.2f}'.format(confidence) }}%
-    </div>
-    <div class="image-preview">
-      <img src="{{ image_url }}" alt="Uploaded X-ray">
-    </div>
-  {% endif %}
+      <input type="file" name="file" accept="image/*" required>
+      <input type="submit" value="Analyze">
+    </form>
+
+    {% if prediction %}
+      {% set status = 'neutral' %}
+      {% if prediction in ['CANCER', 'PNEUMONIA'] and confidence > 80 %}
+        {% set status = 'danger' %}
+      {% elif prediction == 'NORMAL' and confidence > 90 %}
+        {% set status = 'healthy' %}
+      {% endif %}
+
+      <div class="result {{ status }}">
+        <h3>🩺 Diagnosis Result</h3>
+        Result: {{ prediction }}<br>
+        {% if confidence is not none %}
+        Confidence: {{ '{:.2f}'.format(confidence) }}%
+        {% endif %}
+      </div>
+
+      <div class="image-preview">
+        <img src="{{ image_url }}" alt="Uploaded X-ray">
+      </div>
+
+      <div class="result patient">
+        <h3>👤 Patient Details</h3>
+        Name: {{ name }}<br>
+        Age: {{ age }}<br>
+        Mobile: {{ mobile }}<br>
+        Email: {{ email }}
+      </div>
+    {% endif %}
+  </div>
 </body>
 </html>
